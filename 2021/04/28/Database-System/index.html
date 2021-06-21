@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Database System | 獨守空城の博客</title><meta name="keywords" content="Database System"><meta name="author" content="獨守空城"><meta name="copyright" content="獨守空城"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="关于CMU 15-445课程的记录，主讲http:&#x2F;&#x2F;www.cs.cmu.edu&#x2F;~pavlo&#x2F;, 官方网站:https:&#x2F;&#x2F;15445.courses.cs.cmu.edu&#x2F;ect">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Database System">
+<meta property="og:url" content="http://example.com/2021/04/28/Database-System/index.html">
+<meta property="og:site_name" content="獨守空城の博客">
+<meta property="og:description" content="关于CMU 15-445课程的记录，主讲http:&#x2F;&#x2F;www.cs.cmu.edu&#x2F;~pavlo&#x2F;, 官方网站:https:&#x2F;&#x2F;15445.courses.cs.cmu.edu&#x2F;ect">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/compute_networking.jpg">
+<meta property="article:published_time" content="2021-04-28T01:43:54.000Z">
+<meta property="article:modified_time" content="2021-05-28T02:21:07.000Z">
+<meta property="article:author" content="獨守空城">
+<meta property="article:tag" content="Database System">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/compute_networking.jpg"><link rel="shortcut icon" href="/img/maple.png"><link rel="canonical" href="http://example.com/2021/04/28/Database-System/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-28 10:21:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/beauty.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目錄</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/forest.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">獨守空城の博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首頁</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 時間軸</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 標籤</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目錄</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Database System</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-28T01:43:54.000Z" title="发表于 2021-04-28 09:43:54">2021-04-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-28T02:21:07.000Z" title="更新于 2021-05-28 10:21:07">2021-05-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Database-System/">Database System</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>Database Storage解决如何存储数据库，Buffer pool解决如何在内存与磁盘移动数据的问题</p>
+</blockquote>
+<h1 id="Lecture-01-Database-Storagee-Part-I"><a href="#Lecture-01-Database-Storagee-Part-I" class="headerlink" title="Lecture #01: Database Storagee (Part I)"></a>Lecture #01: Database Storagee (Part I)</h1><h2 id="1-Storage"><a href="#1-Storage" class="headerlink" title="1 Storage"></a>1 Storage</h2><p>本次课程讨论的是<code>面向磁盘</code>的DBMS，主要存储位置的在非易失性磁盘上。</p>
+<p><strong>易失性设备</strong></p>
+<ul>
+<li>断电后数据丢失</li>
+<li>可以通过地址进行快速地随机存取</li>
+<li>这类存储设备，在本次课程中被称为<code>内存</code></li>
+</ul>
+<p><strong>非易失性设备</strong></p>
+<ul>
+<li>断电后数据不丢失</li>
+<li>存取以<code>快或页</code>为单位</li>
+<li>这类存储设备，在本次课程中被称为<code>硬盘</code></li>
+</ul>
+<h2 id="2-Disk-Oriented-DBMS-Overview"><a href="#2-Disk-Oriented-DBMS-Overview" class="headerlink" title="2 Disk-Oriented DBMS Overview"></a>2 Disk-Oriented DBMS Overview</h2><p>数据库被放到磁盘上，数据库文件中的数据以<code>页</code>的形式组织，第一个页被称作<code>目录页</code>。为了操作数据，DBMS有一个<code>buffer pool</code>，控制数据在硬盘与内存之间的移动。DBMS还有一个<code>执行引擎</code>，这个执行引擎会在<code>buffer pool</code>中寻找特定的页，<code>buffer pool</code>会把对应的页加载进内存，并返回对应指针。</p>
+<h2 id="3-DBMS-vs-OS"><a href="#3-DBMS-vs-OS" class="headerlink" title="3 DBMS vs. OS"></a>3 DBMS vs. OS</h2><p>DBMS的目标是处理超过内存大小的数据，这和<code>虚拟内存</code>十分相似，所以为什么不把任务交给OS，使用<code>mmap</code>把文件映射到进程内存中 ？</p>
+<p>DBMS想要自己控制所有的东西，而OS更像是一个通用货车。</p>
+<ul>
+<li><p>Flushing dirty pages to disk in the correct order. </p>
+</li>
+<li><p>Specialized prefetching. </p>
+</li>
+<li><p>Buffer replacement policy. </p>
+</li>
+<li><p>Thread/process scheduling.</p>
+</li>
+</ul>
+<h2 id="4-File-Storage"><a href="#4-File-Storage" class="headerlink" title="4 File Storage"></a>4 File Storage</h2><p>DBMS将数据库以文件的形式存储在磁盘上，一些使用多个文件，一些存储为单个文件。而OS对文件内容一无所知，只有DBMS知道如何解释其内容。DBMS的<code>storage manager</code>负责管理数据库的文件，它将文件视为页的集合，持续追踪被写进页中的数据以及还有多少空闲页。</p>
+<h2 id="5-Database-Pages"><a href="#5-Database-Pages" class="headerlink" title="5 Database Pages"></a>5 Database Pages</h2><p>DBMS通过固定大小的块(<code>页</code>)组织数据库。页中可能含有不同的数据（元组、目录…），多数系统不会混合不同类型的页。一些系统要求这些页是<code>self-contained</code>的，这意味着对于读取本页内容所需的内容都存储在页中。</p>
+<p>每个页都有一个唯一的<code>identifier</code>。如果数据库是单个文件，那么页号可以是<code>offset</code>。多数DBMS有一个间接层，将页号转换成文件路径与偏移，当上层查找某个页时，<code>storage manager</code>会将页号转换成文件路径与偏移。</p>
+<p>多数DBMS使用固定大小的页，以避免外部碎片，通常有三种概念的页：</p>
+<ul>
+<li>Hardware page (usually 4 KB)</li>
+<li>OS page (4 KB)</li>
+<li>Database page (1-16 KB).</li>
+</ul>
+<p>存储设备保证原子性地进行<code>Hardware page size</code>大小的写，当Database page 更大时，则需要进行额外的操作。</p>
+<h2 id="6-Database-Heap"><a href="#6-Database-Heap" class="headerlink" title="6 Database Heap"></a>6 Database Heap</h2><p>一个<code>heap file</code>是一个页的无序集合，记录被乱序存储，DBMS有两种表示形式：</p>
+<ul>
+<li>Linked List：两个指针分别指向数据页与空闲页，顺序查找</li>
+<li>Page Directory:  DBMS维护一个可以追踪数据页和空闲页的目录页</li>
+</ul>
+<h2 id="7-Page-Layout"><a href="#7-Page-Layout" class="headerlink" title="7 Page Layout"></a>7 Page Layout</h2><p>每个页有一个记录头，它包含当前页的元数据：</p>
+<ul>
+<li>Page size</li>
+<li>Checksum</li>
+<li>DBMS version</li>
+<li>Transaction visibility</li>
+<li>Self-containment. (Some systems like Oracle require this.)</li>
+</ul>
+<p>两种在页中存放数据的方式：</p>
+<p><strong>slotted-pages</strong>：记录头追踪被使用的slot，最后一个slot的偏移以及一个用于记录每个slot位置的slot数组</p>
+<p> <strong>log-structured</strong>：相对于记录数据，DBMS仅仅记录日志。在读取数据时，DBMS扫描日志记录并生成对应数据。写速度快，读速度慢</p>
+<h2 id="8-Tuple-Layout"><a href="#8-Tuple-Layout" class="headerlink" title="8 Tuple Layout"></a>8 Tuple Layout</h2><p>Tuple Header: Contains meta-data about the tuple</p>
+<p>Tuple Data: Actual data for attributes.</p>
+<p>Unique Identifier: Each tuple in the database is assigned a unique identifier</p>
+<h1 id="Lecture-02-Database-Storagee-Part-II"><a href="#Lecture-02-Database-Storagee-Part-II" class="headerlink" title="Lecture #02: Database Storagee (Part II)"></a>Lecture #02: Database Storagee (Part II)</h1><h2 id="1-Data-Representation"><a href="#1-Data-Representation" class="headerlink" title="1 Data Representation"></a>1 Data Representation</h2><p><strong>Integers</strong>： navie C/C++ types</p>
+<p><strong>Variable Precision Numbers</strong> : navie C/C++ types</p>
+<p><strong>Fixed-Point Precision Numbers</strong>: 任意精度与大小，但是性能略低</p>
+<p><strong>Variable-Length Data</strong>：任意长度的数据，溢出页</p>
+<p><strong>Dates and Times</strong>：unix stamp</p>
+<p><strong>System Catalogs</strong>：存储关于数据库的元信息：数据库中的表，每一列的数据类型等</p>
+<h2 id="2-Workloads"><a href="#2-Workloads" class="headerlink" title="2 Workloads"></a><strong>2 Workloads</strong></h2><p>**On-Line Transaction Processing (OLTP)**：反复快速短暂的读/写操作</p>
+<p>**On-Line Analytical Processing (OLAP)**：每次读取大量数据用于分析，复杂操作</p>
+<p><strong>Hybrid Transaction + Analytical Processing</strong>：OLTP+OLAP</p>
+<h2 id="3-Storage-Models"><a href="#3-Storage-Models" class="headerlink" title="3 Storage Models"></a>3 Storage Models</h2><p>**N-Ary Storage Model (NSM)**：</p>
+<p>优点：快速的插入、更新和删除；对于需要整个记录的查询友好</p>
+<p>缺点：对于需要读取表的大量数据和表的一部分属性不友好</p>
+<p><strong>Decomposition Storage Model (DSM)：</strong></p>
+<p>优点：仅会读取查询所需要的数据；便于压缩</p>
+<p>缺点：插入、删除和更新操作较慢</p>
+<p>如何将列存储的输出成功拼合在一起：</p>
+<ul>
+<li>定长属性，变长属性补0，或者使用字典</li>
+<li>内嵌<code>tuple id</code></li>
+</ul>
+<h1 id="Lecture-03-Buffer-Pools"><a href="#Lecture-03-Buffer-Pools" class="headerlink" title="Lecture #03: Buffer Pools"></a>Lecture #03: Buffer Pools</h1><h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><p>DBMS的目标是尽量减少数据在内存与磁盘之间移来移去。</p>
+<p><code>Spatial Control</code>：页面被写到磁盘上的什么位置，目标是使经常一起使用的页放到一起。</p>
+<p><code>Temporal Control</code>：页面什么时候被加载和写回磁盘，目标使<code>stall</code>的次数尽可能少。</p>
+<h2 id="2-Locks-vs-Latches"><a href="#2-Locks-vs-Latches" class="headerlink" title="2 Locks vs. Latches"></a>2 Locks vs. Latches</h2><p><strong>Locks</strong>：一个锁高层的、逻辑的，她保护数据库免受其他<code>事务</code>的损害。事务在执行期间将持续占有锁。锁有能力回滚。</p>
+<p><strong>Latches</strong>：一个闩是低层的，DBMS用来保护<code>critical sections</code>，操作执行期间占有闩。闩不需要回滚能力。</p>
+<h2 id="3-Buffer-Pool"><a href="#3-Buffer-Pool" class="headerlink" title="3 Buffer Pool"></a>3 Buffer Pool</h2><p><code>buffer pool</code>是磁盘中的页在内存中的cache，其中的每一个单元叫做<code>frame</code>。</p>
+<p><img src="/2021/04/28/Database-System/buffer_pool.png" alt="buffer pool"></p>
+<h3 id="Buffer-Pool-Meta-data"><a href="#Buffer-Pool-Meta-data" class="headerlink" title="Buffer Pool Meta-data"></a>Buffer Pool Meta-data</h3><p><code>page table</code>是一个哈希表，它完成<code>page id</code>到<code>frame id</code>的映射。由于<code>buffer pool</code>中的页并不是按照顺序放置的，引入中间层加快访问。此外，关于页的元数据还有<code>dirty-bit</code>和<code>pin-count</code>。</p>
+<h3 id="Memory-Allocation-Policies"><a href="#Memory-Allocation-Policies" class="headerlink" title="Memory Allocation Policies"></a>Memory Allocation Policies</h3><p><code>Global policies</code>：考虑所有正在运行的事务</p>
+<p><code>local policies</code>：仅考虑单个事务的快速执行，需要支持页的共享</p>
+<h2 id="4-Buffer-Pool-Optimizations"><a href="#4-Buffer-Pool-Optimizations" class="headerlink" title="4 Buffer Pool Optimizations"></a>4 Buffer Pool Optimizations</h2><p><strong>Multiple Buffer Pools</strong>：如何确定记录在哪一个<code>buffer pool</code></p>
+<p>Objected id: 在<code>record id</code>中附加<code>object id</code></p>
+<p>Hashing：从<code>page id</code>映射到<code>buffer pool</code></p>
+<p><strong>Pre-fetching</strong></p>
+<p><strong>Scan Sharing</strong></p>
+<p><strong>Buffer Pool Bypass</strong>：连续大量的读取操作，将页放进进程内存中，用完直接丢弃，避免污染<code>buffer pool</code></p>
+<h2 id="5-OS-Page-Cache"><a href="#5-OS-Page-Cache" class="headerlink" title="5 OS Page Cache"></a>5 OS Page Cache</h2><p>磁盘操作会通过<code>OS API</code>完成，这导致文件系统对于读取的文件会进行缓存。DBMS会通过<code>dirct I/O</code>告诉操作系统不要缓存读取页，因为<code>buffer pool</code>想要自己管理缓存。</p>
+<h2 id="6-Buffer-Replacement-Policies"><a href="#6-Buffer-Replacement-Policies" class="headerlink" title="6 Buffer Replacement Policies"></a>6 Buffer Replacement Policies</h2><p><strong>Least Recently Used (LRU)</strong></p>
+<p><strong>CLOCK</strong></p>
+<p>LRU和CLOCK如何解决 <em>sequential flooding</em>？</p>
+<p>LRU-K; localization per query; priority hint</p>
+<h3 id="Dirty-Pages"><a href="#Dirty-Pages" class="headerlink" title="Dirty Pages"></a>Dirty Pages</h3><p>如进行修改的页，可以直接丢弃；修改的页，需要写回磁盘。</p>
+<p><strong>background writing</strong></p>
+<h1 id="Lecture-04-Hash-Tables"><a href="#Lecture-04-Hash-Tables" class="headerlink" title="Lecture #04: Hash Tables"></a>Lecture #04: Hash Tables</h1><h2 id="1-Data-Structures"><a href="#1-Data-Structures" class="headerlink" title="1 Data Structures"></a>1 Data Structures</h2><ul>
+<li><p>Hash Function</p>
+</li>
+<li><p>Hashing Scheme</p>
+</li>
+</ul>
+<h2 id="2-Hash-Functions"><a href="#2-Hash-Functions" class="headerlink" title="2 Hash Functions"></a>2 Hash Functions</h2><p><code>hash function</code>接收任何东西作为输入，输出一个整数代表对应输入。加密算法通常不是好的选择，因为我们只关心哈希函数的速度与冲突的概率。</p>
+<p><em>Facebook XXHash3</em></p>
+<h2 id="3-Static-Hashing-Schemes"><a href="#3-Static-Hashing-Schemes" class="headerlink" title="3 Static Hashing Schemes"></a>3 Static Hashing Schemes</h2><p>需要提前知道要存储的数据量，否则可能需要重建</p>
+<p><strong>Linear Probe Hashing</strong></p>
+<p><strong>Robin Hood Hashing</strong></p>
+<p><strong>Cuckoo Hashing</strong></p>
+<h2 id="4-Dynamic-Hashing-Schemes"><a href="#4-Dynamic-Hashing-Schemes" class="headerlink" title="4 Dynamic Hashing Schemes"></a>4 Dynamic Hashing Schemes</h2><p><strong>Chained Hashing</strong></p>
+<p><strong>Extendible Hashing</strong></p>
+<p><strong>Linear Hashing</strong></p>
+<h1 id="Lecture-05-Tree-Indexes-I"><a href="#Lecture-05-Tree-Indexes-I" class="headerlink" title="Lecture #05: Tree Indexes I"></a>Lecture #05: Tree Indexes I</h1><h2 id="1-B-Tree"><a href="#1-B-Tree" class="headerlink" title="1 B+Tree"></a>1 B+Tree</h2><p><code>B+ Tree</code>自平衡数据结构，查找，插入，删除的时间复杂度为log(n)，叶子节点可以存放键和数据，也可以存放键和数据对应的位置(便于压缩)</p>
+<p><img src="/2021/04/28/Database-System/B_plus_tree.png" alt="B_plus_tree"></p>
+<p><strong>Insertion</strong></p>
+<p><strong>Deletion</strong></p>
+<p><strong>Selection Conditions</strong></p>
+<p><strong>Non-Unique Indexes</strong></p>
+<p><strong>Duplicate Keys</strong></p>
+<p><strong>Clustered Indexes</strong></p>
+<p><strong>Heap Clustering</strong></p>
+<p><strong>Index Scan Page Sorting</strong></p>
+<h1 id="Lecture-06-Tree-Indexes-II"><a href="#Lecture-06-Tree-Indexes-II" class="headerlink" title="Lecture #06: Tree Indexes II"></a>Lecture #06: Tree Indexes II</h1><h2 id="1-B-Tree-Design-Choices"><a href="#1-B-Tree-Design-Choices" class="headerlink" title="1 B+Tree Design Choices"></a>1 B+Tree Design Choices</h2><p><strong>Node Size</strong></p>
+<p><strong>Merge Threshold</strong></p>
+<p><strong>Variable Length Keys</strong></p>
+<p><strong>Intra-Node Search</strong></p>
+<h2 id="2-Optimizations"><a href="#2-Optimizations" class="headerlink" title="2 Optimizations"></a>2 Optimizations</h2><p><strong>Prefix Compression</strong></p>
+<p><strong>Deduplication</strong></p>
+<p><strong>Suffix Truncation</strong></p>
+<p><strong>Bulk Insert</strong></p>
+<p><strong>Pointer Swizzling</strong></p>
+<h2 id="3-Additional-Index-Usage"><a href="#3-Additional-Index-Usage" class="headerlink" title="3 Additional Index Usage"></a>3 Additional Index Usage</h2><p><strong>Implicit Indexes</strong></p>
+<p><strong>Partial Indexes</strong></p>
+<p><strong>Covering Indexes</strong></p>
+<p><strong>Index Include Columns</strong></p>
+<p><strong>Function/Expression Indexes</strong></p>
+<h2 id="4-Trie-Index"><a href="#4-Trie-Index" class="headerlink" title="4 Trie Index"></a>4 Trie Index</h2><p>前缀树</p>
+<h2 id="5-Radix-Tree"><a href="#5-Radix-Tree" class="headerlink" title="5 Radix Tree"></a>5 Radix Tree</h2><p>对前缀树进行垂直压缩</p>
+<h2 id="6-Inverted-Indexes"><a href="#6-Inverted-Indexes" class="headerlink" title="6 Inverted Indexes"></a>6 Inverted Indexes</h2><p>全文检索</p>
+<p><strong>what to store</strong>：出现的单词、频率、位置···</p>
+<p><strong>when to update</strong>：延迟更新</p>
+<h1 id="Lecture-07-Index-Concurrency-Control"><a href="#Lecture-07-Index-Concurrency-Control" class="headerlink" title="Lecture #07: Index Concurrency Control"></a>Lecture #07: Index Concurrency Control</h1><h2 id="1-Index-Concurrency-Control"><a href="#1-Index-Concurrency-Control" class="headerlink" title="1 Index Concurrency Control"></a>1 Index Concurrency Control</h2><p><code>concurrency control</code>是DBMS在并发操作中得到“correct”的结果。</p>
+<p>“correct”的意义：</p>
+<ul>
+<li>Logical Correctness：线程能够读取它应该被允许读取的值</li>
+<li>Physical Correctness：数据结构正确，没有野指针</li>
+</ul>
+<p>今日讨论的是<code>Physical Correctness</code>。</p>
+<h2 id="2-Locks-vs-Latches-1"><a href="#2-Locks-vs-Latches-1" class="headerlink" title="2 Locks vs. Latches"></a>2 Locks vs. Latches</h2><p><img src="/2021/04/28/Database-System/lock_latch.png" alt="locks vs latches"></p>
+<h2 id="3-Latch-Implementations"><a href="#3-Latch-Implementations" class="headerlink" title="3 Latch Implementations"></a>3 Latch Implementations</h2><p>Latch的底层实现是CPU的原子操作<code>compare-and-swap (CAS)</code>，有几种方法在DBMS中实现Latch：</p>
+<h3 id="Blocking-OS-Mutex"><a href="#Blocking-OS-Mutex" class="headerlink" title="Blocking OS Mutex"></a><strong>Blocking OS Mutex</strong></h3><p>Example：std::mutex</p>
+<p>Advantages：使用简单</p>
+<p>Disadvantages：慢且不可扩展</p>
+<h3 id="Test-and-Set-Spin-Latch-TAS"><a href="#Test-and-Set-Spin-Latch-TAS" class="headerlink" title="Test-and-Set Spin Latch (TAS)"></a>Test-and-Set Spin Latch (TAS)</h3><p>Example：std::atomic<T></T></p>
+<p>Advantages：高效</p>
+<p>Disadvantages：扩展性差，对缓存、操作系统不友好</p>
+<h3 id="Reader-Writer-Latches"><a href="#Reader-Writer-Latches" class="headerlink" title="Reader-Writer Latches"></a>Reader-Writer Latches</h3><p>Example：std::shared_mutex</p>
+<p>Advantages：允许并发读</p>
+<p>Disadvantages：<code>starvation</code></p>
+<h2 id="4-Hash-Table-Latching"><a href="#4-Hash-Table-Latching" class="headerlink" title="4 Hash Table Latching"></a>4 Hash Table Latching</h2><p><strong>Page Latches</strong></p>
+<p><strong>Slot Latches</strong></p>
+<h2 id="5-B-Tree-Latching"><a href="#5-B-Tree-Latching" class="headerlink" title="5 B+Tree Latching"></a>5 B+Tree Latching</h2><p>基本的处理过程：</p>
+<ol>
+<li>Get latch for the parent.</li>
+<li>Get latch for the child.</li>
+<li>Release latch for the parent if it is deemed “safe”. A “safe” node is one that will not split or merge when updated (not full-on insertion or more than half full on deletion).</li>
+</ol>
+<p><strong>Basic Latch Crabbing Protocol</strong></p>
+<p>查找：从根节点开始，按照上述过程在父子节点之间释放与获取锁</p>
+<p>插入/删除：从根节点开始，流程相同，需要根据子节点是否<code>safe</code>来释放祖先节点的锁</p>
+<p>读操作无需关心<code>safe</code>问题，锁的释放顺序不重要，但是首先释放高层的锁是一个好的选择。</p>
+<p><strong>Improved Lock Crabbing Protocol</strong></p>
+<p>查找：同<code>Basic Latch Crabbing Protocol</code></p>
+<p>插入/删除：首先按照读操作进行，在叶结点上加写锁，如果叶子节点不安全，释放所有的锁，按照<code>Basic Latch Crabbing Protocol</code>进行</p>
+<p><strong>Leaf Node Scans</strong></p>
+<p>死锁问题，如果不能获取到锁，立刻终止执行</p>
+<p><strong>Delayed parent updates</strong></p>
+<h1 id="Lecture-8-Sorting-amp-Aggregation-Algorithms"><a href="#Lecture-8-Sorting-amp-Aggregation-Algorithms" class="headerlink" title="Lecture #8: Sorting &amp; Aggregation Algorithms"></a>Lecture #8: Sorting &amp; Aggregation Algorithms</h1><h2 id="1-Sorting"><a href="#1-Sorting" class="headerlink" title="1 Sorting"></a>1 Sorting</h2><p>排序被用于<code>ORDER BY, JOIN, GROUP BY, DISTINCT</code>操作，如果数据可以全部放进内存，DBMS可以使用快排，否则就要使用外部排序。</p>
+<p><strong>Two-way Merge Sort</strong></p>
+<p><strong>General (K-way) Merge Sort</strong></p>
+<p><strong>Double Buffering Optimization</strong></p>
+<p><strong>Using B+Trees</strong></p>
+<h2 id="2-Aggregations"><a href="#2-Aggregations" class="headerlink" title="2 Aggregations"></a>2 Aggregations</h2><p>两种方法用于<code>aggregation</code>：</p>
+<p><strong>Sorting</strong>：先使用过滤条件，然后使用排序</p>
+<p><strong>Hashing</strong>：Partition，之后ReHash</p>
+<h1 id="Lecture-9-Joins-Algorithms"><a href="#Lecture-9-Joins-Algorithms" class="headerlink" title="Lecture #9: Joins Algorithms"></a>Lecture #9: Joins Algorithms</h1><h2 id="1-Joins"><a href="#1-Joins" class="headerlink" title="1 Joins"></a>1 Joins</h2><p><strong>Operator Output</strong></p>
+<p>Data：直接将数据输出，后续操作方便，需要大内存</p>
+<p>Record Ids：仅输出<code>join key</code>和<code>record id</code>，<em>late materialization</em></p>
+<p><strong>Cost Analysis</strong></p>
+<p>Variables used in this lecture: </p>
+<ul>
+<li>M pages in table R (Outer Table), m tuples total</li>
+<li>N pages in table S (Inner Table), n tuples total</li>
+</ul>
+<h2 id="2-Nested-Loop-Join"><a href="#2-Nested-Loop-Join" class="headerlink" title="2 Nested Loop Join"></a>2 Nested Loop Join</h2><h3 id="Simple-Nested-Loop-Join"><a href="#Simple-Nested-Loop-Join" class="headerlink" title="Simple Nested Loop Join"></a>Simple Nested Loop Join</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach tuple r ∈ R:</span><br><span class="line">	foreach tuple s ∈ S:</span><br><span class="line">		emit, <span class="keyword">if</span> r <span class="keyword">and</span> s match</span><br></pre></td></tr></table></figure>
+<p>$$<br>Cost: M + (m*N)<br>$$</p>
+<h3 id="Block-Nested-Loop-Join"><a href="#Block-Nested-Loop-Join" class="headerlink" title="Block Nested Loop Join"></a>Block Nested Loop Join</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foreach block BR ∈ R:</span><br><span class="line">	foreach block BS ∈ S:</span><br><span class="line">		foreach tuple r ∈ BR:</span><br><span class="line">			foreach tuple s ∈ Bs:</span><br><span class="line">				emit, <span class="keyword">if</span> r <span class="keyword">and</span> s match</span><br></pre></td></tr></table></figure>
+<p>$$<br>Cost: M + (M*N)<br>$$</p>
+<h3 id="Index-Nested-Loop-Join"><a href="#Index-Nested-Loop-Join" class="headerlink" title="Index Nested Loop Join"></a>Index Nested Loop Join</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach tuple r ∈ R:</span><br><span class="line">	foreach tuple s ∈ Index(ri = sj):</span><br><span class="line">		emit, <span class="keyword">if</span> r <span class="keyword">and</span> s match</span><br></pre></td></tr></table></figure>
+<p>$$<br>Cost: M + (m*C)<br>$$</p>
+<p><em>Assume the cost of each index probe is some constant C per tuple.</em></p>
+<h2 id="3-Sort-Merge-Join"><a href="#3-Sort-Merge-Join" class="headerlink" title="3 Sort-Merge Join"></a>3 Sort-Merge Join</h2><p>当表已经排好序时，表现较好</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sort R,S on join keys</span><br><span class="line">cursorR ← Rsorted, cursorS ← Ssorted</span><br><span class="line"><span class="keyword">while</span> cursorR <span class="keyword">and</span> cursorS:</span><br><span class="line">	<span class="keyword">if</span> cursorR &gt; cursorS:</span><br><span class="line">		increment cursorS</span><br><span class="line">	<span class="keyword">if</span> cursorR &lt; cursorS:</span><br><span class="line">		increment cursorR</span><br><span class="line">	elif cursorR <span class="keyword">and</span> cursorS match:</span><br><span class="line">        emit</span><br><span class="line">        increment cursorS</span><br></pre></td></tr></table></figure>
+<p><em>Assume that the DBMS has B buffers to use for the algorithm</em><br>$$<br>Sort\ Cost\ for\ R: 2M*(1+\lceil \log_{B-1} \lceil M/B \rceil \rceil)<br>$$</p>
+<p>$$<br>Sort\ Cost\ for\ S: 2N*(1+\lceil \log_{B-1} \lceil N/B \rceil \rceil)<br>$$</p>
+<p>$$<br>Merge\  Cost:M+N\sim M*N<br>$$</p>
+<p>$$<br>total\  cost:Sort+Merge<br>$$</p>
+<h2 id="4-Hash-Join"><a href="#4-Hash-Join" class="headerlink" title="4 Hash Join"></a>4 Hash Join</h2><h3 id="Basic-Hash-Join"><a href="#Basic-Hash-Join" class="headerlink" title="Basic Hash Join"></a>Basic Hash Join</h3><p>总体思路是先将驱动表基于<code>Join的属性</code>分成更小的块，然后再进行比较。</p>
+<p><strong>Build</strong>：哈希处理驱动表，<code>Key</code>是<code>Join</code>的属性</p>
+<p><strong>Probe</strong>：使用相同哈希方法处理被驱动表，注意考虑<code>collision</code>，可以使用 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Bloom_filter">Bloom Filter</a>优化</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">build hash table HTR <span class="keyword">for</span> R</span><br><span class="line">foreach tuple s ∈ S</span><br><span class="line">	output, if h1(s) ∈ HTR</span><br></pre></td></tr></table></figure>
+<h3 id="Grace-Hash-Join-Hybrid-Hash-Join"><a href="#Grace-Hash-Join-Hybrid-Hash-Join" class="headerlink" title="Grace Hash Join / Hybrid Hash Join"></a>Grace Hash Join / Hybrid Hash Join</h3><p>适用情况：内存不足，不能完整的放下整个驱动表的哈希表</p>
+<p><strong>Build</strong>：使用相同哈希函数对两个表同时哈希</p>
+<p><strong>Probe</strong>：在对应的槽中处理</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foreach tuple r ∈ bucketR,<span class="number">0</span>:</span><br><span class="line">	foreach tuple s ∈ bucketS,<span class="number">0</span>:</span><br><span class="line">		emit, <span class="function"><span class="keyword">if</span> <span class="title">match</span><span class="params">(r, s)</span></span></span><br></pre></td></tr></table></figure>
+<p>$$<br>Partitioning\ Phase\ Cost:2*(M+N)<br>$$</p>
+<p>$$<br>Probe\ Phase\ Cost:M+N<br>$$</p>
+<p>$$<br>Total\ Cost\ :3*(M+N)<br>$$</p>
+<h1 id="Lecture-10-Query-Processing-I"><a href="#Lecture-10-Query-Processing-I" class="headerlink" title="Lecture #10: Query Processing I"></a>Lecture #10: Query Processing I</h1><h2 id="1-Query-Plan"><a href="#1-Query-Plan" class="headerlink" title="1 Query Plan"></a>1 Query Plan</h2><p>DBMS会将一个SQL语句转换为一个<code>SQL Plan</code>，数据从叶结点流向根节点，根节点的输出就是整个查询的输出。</p>
+<h2 id="2-Processing-Models"><a href="#2-Processing-Models" class="headerlink" title="2 Processing Models"></a>2 Processing Models</h2><p><code>processing model</code>定义了如何执行查询，它定义数据如何在操作符间传递等。</p>
+<h3 id="Iterator-Model"><a href="#Iterator-Model" class="headerlink" title="Iterator Model"></a>Iterator Model</h3><p><code>iterator model</code>几乎被用于所有按行记录的DBMS，能够进行流水线处理，但是一些操作需要阻塞直到取出全部数据(join，subquery，order by)</p>
+<p><img src="/2021/04/28/Database-System/query_model_iterator.png" alt="iterator model"></p>
+<h3 id="Materialization-Model"><a href="#Materialization-Model" class="headerlink" title="Materialization Model"></a>Materialization Model</h3><p><code>materialization model</code>是特化的<code>iterator model</code>，每一个操作符一次会返回所有数据，对于OLTP友好</p>
+<p><img src="/2021/04/28/Database-System/query_model_materialization.png" alt="Materialization Model"></p>
+<h3 id="Vectorization-Model"><a href="#Vectorization-Model" class="headerlink" title="Vectorization Model"></a>Vectorization Model</h3><p><code>vectorization model </code>每次回返回一个<code>batch</code>大小的数据</p>
+<p><img src="/2021/04/28/Database-System/query_model_vectorization_model.png" alt="vectorization model"></p>
+<h2 id="3-Access-Methods"><a href="#3-Access-Methods" class="headerlink" title="3 Access Methods"></a>3 Access Methods</h2><p><code>access method</code>定义DBMS如何存储在表中的数据，例如<code>Processing mode的叶结点</code>。</p>
+<h2 id="Sequential-Scan"><a href="#Sequential-Scan" class="headerlink" title="Sequential Scan"></a>Sequential Scan</h2><p>对于表中的每一个页，维护一个指向最后一个已经检查过的记录的<code>cursor</code>，顺序扫描</p>
+<p>优化：</p>
+<p><strong>Prefetching</strong></p>
+<p><strong>Parallelization</strong></p>
+<p><strong>Buffer Pool Bypass</strong></p>
+<p><strong>Zone Map</strong>：统计信息</p>
+<p><strong>Late Materialization</strong>：useful in column-store systems</p>
+<p><strong>Heap Clustering</strong></p>
+<h3 id="Index-Scan"><a href="#Index-Scan" class="headerlink" title="Index Scan"></a>Index Scan</h3><h2 id="4-Modification-Queries"><a href="#4-Modification-Queries" class="headerlink" title="4 Modification Queries"></a>4 Modification Queries</h2><p>修改数据库需要进行<code>约束性检查</code>并且<code>更新索引</code>。</p>
+<p>对于<code>UPDATE/DELETE</code>，必须记录之前处理过的数据，Halloween Problem。</p>
+<p>对于<code>INSERT</code>，在运算符内实例化记录或者插入从子操作符传来的任何记录</p>
+<h2 id="5-Expression-Evaluation"><a href="#5-Expression-Evaluation" class="headerlink" title="5 Expression Evaluation"></a>5 Expression Evaluation</h2><p>DBMS使用表达式树代表一个<code>WHERE</code>语句，灵活但是速度较慢，一个更好的方式也许是直接进行比较。</p>
+<p><img src="/2021/04/28/Database-System/query_model_expression_evaluation.png" alt="Expression Evaluation"></p>
+<h1 id="Lecture-11-Query-Execution-II"><a href="#Lecture-11-Query-Execution-II" class="headerlink" title="Lecture #11: Query Execution II"></a>Lecture #11: Query Execution II</h1><h1 id="1-Process-Models"><a href="#1-Process-Models" class="headerlink" title="1 Process Models"></a>1 Process Models</h1><p><code>process model</code>定义了对于多用户的环境，系统如何处理多个请求。DBMS由许多的<code>worker</code>组成，它们负责处理来自客户端的任务并返回结果。</p>
+<p><em>For each query plan, the DBMS decides where, when, and how to execute it. The DBMS always knows more than the OS</em></p>
+<h3 id="Process-per-Worker"><a href="#Process-per-Worker" class="headerlink" title="Process per Worker"></a>Process per Worker</h3><p>每一个<code>worker</code>由一个操作系统进程表示，其依赖于OS调度。<code>dispater</code>收到来自请求，创建子进程处理该连接，使用<code>shared_memory</code>处理共享数据，单个进程的崩溃不影响整个系统。</p>
+<p><img src="/2021/04/28/Database-System/process_mdol_per_process.png" alt="process_mdol_per_process"></p>
+<h3 id="Process-Pool"><a href="#Process-Pool" class="headerlink" title="Process Pool"></a>Process Pool</h3><p>类似上一个，但是CPU缓存局部性较差。</p>
+<p><img src="/2021/04/28/Database-System/process_model_process_pool.png" alt="process_model_process_pool"></p>
+<h3 id="Thread-per-Worker"><a href="#Thread-per-Worker" class="headerlink" title="Thread per Worker"></a>Thread per Worker</h3><p>单个进程多线程处理，DBMS处理线程间的调度，减少上下文切换的开销，不必共享内存。</p>
+<p><img src="/2021/04/28/Database-System/process_model_thread_per_worker.png" alt="process_model_thread_per_worker"></p>
+<h2 id="2-Inter-Query-Parallelism"><a href="#2-Inter-Query-Parallelism" class="headerlink" title="2 Inter-Query Parallelism"></a>2 Inter-Query Parallelism</h2><p><code>inter-query parallelism</code>指DBMS并发处理多个查询，增加吞吐量，减少延迟，详述见<a href="#Concurrency-Control">Lecture #14: Concurrency Control Theory</a>。</p>
+<h2 id="3-Intra-Query-parallelism"><a href="#3-Intra-Query-parallelism" class="headerlink" title="3 Intra-Query parallelism"></a>3 Intra-Query parallelism</h2><p><code>intra-query parallelism</code>并行执行单个查询，减少查询所需的时间，类似于<code>producer/consumer</code>。</p>
+<h3 id="Intra-Operator-Parallelism-Horizontal"><a href="#Intra-Operator-Parallelism-Horizontal" class="headerlink" title="Intra-Operator Parallelism (Horizontal)"></a>Intra-Operator Parallelism (Horizontal)</h3><p><code>intra-operator parallelism</code>中，操作被分解为独立的实例，这些实例对不同的数据子集执行相同的功能。加入了一个<code>exchange</code>模块，以合并子操作的输出/将单个输入划分为多个。</p>
+<p><img src="/2021/04/28/Database-System/process_model_intra-query_parallelism.png" alt="process_model_intra-query_parallelism"></p>
+<h3 id="Inter-Operator-Parallelism-Vertical"><a href="#Inter-Operator-Parallelism-Vertical" class="headerlink" title="Inter-Operator Parallelism (Vertical)"></a>Inter-Operator Parallelism (Vertical)</h3><p>也称<code>pipelined parallelism</code>，类似于流水线操作。</p>
+<p><img src="/2021/04/28/Database-System/process_model_intra_operator_parallelism.png" alt="process_model_intra_operator_parallelism"></p>
+<h3 id="Bushy-Parallelism"><a href="#Bushy-Parallelism" class="headerlink" title="Bushy Parallelism"></a>Bushy Parallelism</h3><p>同时执行一个查询的不同部分</p>
+<p><img src="/2021/04/28/Database-System/process_model_bushy_parallelism.png" alt="process_model_bushy_parallelism"></p>
+<h2 id="I-O-Parallelism"><a href="#I-O-Parallelism" class="headerlink" title="I/O Parallelism"></a>I/O Parallelism</h2><p>多个进程/线程能够加快查询的执行速度，但是磁盘容易成为瓶颈。</p>
+<h3 id="Multi-Disk-Parallelism"><a href="#Multi-Disk-Parallelism" class="headerlink" title="Multi-Disk Parallelism"></a>Multi-Disk Parallelism</h3><p>磁盘阵列，DBMS甚至无法感知</p>
+<h3 id="Database-Partitioning"><a href="#Database-Partitioning" class="headerlink" title="Database Partitioning"></a>Database Partitioning</h3><p>将数据库划分到不同的分区中</p>
+<h3 id="Logical-Partitioning"><a href="#Logical-Partitioning" class="headerlink" title="Logical Partitioning"></a>Logical Partitioning</h3><p><strong>vertical partitioning</strong>：按照列划分为不同的区</p>
+<p><strong>horizontal partitioning</strong>：按照行划分为不同的区</p>
+<h1 id="Lecture-14-Query-Planning-amp-Optimization-I"><a href="#Lecture-14-Query-Planning-amp-Optimization-I" class="headerlink" title="Lecture #14: Query Planning &amp; Optimization I"></a>Lecture #14: Query Planning &amp; Optimization I</h1><p>Lecture #14: Query Planning &amp; Optimization II</p>
+<h1 id="Lecture-14-Concurrency-Control-Theory"><a href="#Lecture-14-Concurrency-Control-Theory" class="headerlink" title="Lecture #14: Concurrency Control Theory"></a><span id="Concurrency_Control">Lecture #14: Concurrency Control Theory</span></h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">獨守空城</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/04/28/Database-System/">http://example.com/2021/04/28/Database-System/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">獨守空城の博客</a>！</span></div></div><div class="tag_share"><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/02/design-patterns/"><img class="prev-cover" src="/img/design_patterns.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Design Patterns</div></div></a></div><div class="next-post pull-right"><a href="/2021/04/28/CS144-TCP/"><img class="next-cover" src="/img/compute_networking.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Compute Networking Lab</div></div></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/beauty.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">獨守空城</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/KuilongCui"><i class="fab fa-github"></i><span>關注 Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://www.google.com" target="_blank" title="Google"><i class="fab fa-google"></i></a><a class="social-icon" href="https://www.nowcoder.com/" target="_blank" title="牛客"><i class="fas fa-code"></i></a><a class="social-icon" href="https://www.bupt.edu.cn" target="_blank" title="BUPT"><i class="fas fa-school"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">本博客是对于学习过程的记录</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-01-Database-Storagee-Part-I"><span class="toc-number">1.</span> <span class="toc-text">Lecture #01: Database Storagee (Part I)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Storage"><span class="toc-number">1.1.</span> <span class="toc-text">1 Storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Disk-Oriented-DBMS-Overview"><span class="toc-number">1.2.</span> <span class="toc-text">2 Disk-Oriented DBMS Overview</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-DBMS-vs-OS"><span class="toc-number">1.3.</span> <span class="toc-text">3 DBMS vs. OS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-File-Storage"><span class="toc-number">1.4.</span> <span class="toc-text">4 File Storage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Database-Pages"><span class="toc-number">1.5.</span> <span class="toc-text">5 Database Pages</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Database-Heap"><span class="toc-number">1.6.</span> <span class="toc-text">6 Database Heap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Page-Layout"><span class="toc-number">1.7.</span> <span class="toc-text">7 Page Layout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Tuple-Layout"><span class="toc-number">1.8.</span> <span class="toc-text">8 Tuple Layout</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-02-Database-Storagee-Part-II"><span class="toc-number">2.</span> <span class="toc-text">Lecture #02: Database Storagee (Part II)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Data-Representation"><span class="toc-number">2.1.</span> <span class="toc-text">1 Data Representation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Workloads"><span class="toc-number">2.2.</span> <span class="toc-text">2 Workloads</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Storage-Models"><span class="toc-number">2.3.</span> <span class="toc-text">3 Storage Models</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-03-Buffer-Pools"><span class="toc-number">3.</span> <span class="toc-text">Lecture #03: Buffer Pools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-number">3.1.</span> <span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Locks-vs-Latches"><span class="toc-number">3.2.</span> <span class="toc-text">2 Locks vs. Latches</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Buffer-Pool"><span class="toc-number">3.3.</span> <span class="toc-text">3 Buffer Pool</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Buffer-Pool-Meta-data"><span class="toc-number">3.3.1.</span> <span class="toc-text">Buffer Pool Meta-data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Allocation-Policies"><span class="toc-number">3.3.2.</span> <span class="toc-text">Memory Allocation Policies</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Buffer-Pool-Optimizations"><span class="toc-number">3.4.</span> <span class="toc-text">4 Buffer Pool Optimizations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-OS-Page-Cache"><span class="toc-number">3.5.</span> <span class="toc-text">5 OS Page Cache</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Buffer-Replacement-Policies"><span class="toc-number">3.6.</span> <span class="toc-text">6 Buffer Replacement Policies</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dirty-Pages"><span class="toc-number">3.6.1.</span> <span class="toc-text">Dirty Pages</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-04-Hash-Tables"><span class="toc-number">4.</span> <span class="toc-text">Lecture #04: Hash Tables</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Data-Structures"><span class="toc-number">4.1.</span> <span class="toc-text">1 Data Structures</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Hash-Functions"><span class="toc-number">4.2.</span> <span class="toc-text">2 Hash Functions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Static-Hashing-Schemes"><span class="toc-number">4.3.</span> <span class="toc-text">3 Static Hashing Schemes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Dynamic-Hashing-Schemes"><span class="toc-number">4.4.</span> <span class="toc-text">4 Dynamic Hashing Schemes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-05-Tree-Indexes-I"><span class="toc-number">5.</span> <span class="toc-text">Lecture #05: Tree Indexes I</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-B-Tree"><span class="toc-number">5.1.</span> <span class="toc-text">1 B+Tree</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-06-Tree-Indexes-II"><span class="toc-number">6.</span> <span class="toc-text">Lecture #06: Tree Indexes II</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-B-Tree-Design-Choices"><span class="toc-number">6.1.</span> <span class="toc-text">1 B+Tree Design Choices</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Optimizations"><span class="toc-number">6.2.</span> <span class="toc-text">2 Optimizations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Additional-Index-Usage"><span class="toc-number">6.3.</span> <span class="toc-text">3 Additional Index Usage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Trie-Index"><span class="toc-number">6.4.</span> <span class="toc-text">4 Trie Index</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Radix-Tree"><span class="toc-number">6.5.</span> <span class="toc-text">5 Radix Tree</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Inverted-Indexes"><span class="toc-number">6.6.</span> <span class="toc-text">6 Inverted Indexes</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-07-Index-Concurrency-Control"><span class="toc-number">7.</span> <span class="toc-text">Lecture #07: Index Concurrency Control</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Index-Concurrency-Control"><span class="toc-number">7.1.</span> <span class="toc-text">1 Index Concurrency Control</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Locks-vs-Latches-1"><span class="toc-number">7.2.</span> <span class="toc-text">2 Locks vs. Latches</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Latch-Implementations"><span class="toc-number">7.3.</span> <span class="toc-text">3 Latch Implementations</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Blocking-OS-Mutex"><span class="toc-number">7.3.1.</span> <span class="toc-text">Blocking OS Mutex</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Test-and-Set-Spin-Latch-TAS"><span class="toc-number">7.3.2.</span> <span class="toc-text">Test-and-Set Spin Latch (TAS)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reader-Writer-Latches"><span class="toc-number">7.3.3.</span> <span class="toc-text">Reader-Writer Latches</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Hash-Table-Latching"><span class="toc-number">7.4.</span> <span class="toc-text">4 Hash Table Latching</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-B-Tree-Latching"><span class="toc-number">7.5.</span> <span class="toc-text">5 B+Tree Latching</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-8-Sorting-amp-Aggregation-Algorithms"><span class="toc-number">8.</span> <span class="toc-text">Lecture #8: Sorting &amp; Aggregation Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Sorting"><span class="toc-number">8.1.</span> <span class="toc-text">1 Sorting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Aggregations"><span class="toc-number">8.2.</span> <span class="toc-text">2 Aggregations</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-9-Joins-Algorithms"><span class="toc-number">9.</span> <span class="toc-text">Lecture #9: Joins Algorithms</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Joins"><span class="toc-number">9.1.</span> <span class="toc-text">1 Joins</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Nested-Loop-Join"><span class="toc-number">9.2.</span> <span class="toc-text">2 Nested Loop Join</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Simple-Nested-Loop-Join"><span class="toc-number">9.2.1.</span> <span class="toc-text">Simple Nested Loop Join</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Block-Nested-Loop-Join"><span class="toc-number">9.2.2.</span> <span class="toc-text">Block Nested Loop Join</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Index-Nested-Loop-Join"><span class="toc-number">9.2.3.</span> <span class="toc-text">Index Nested Loop Join</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Sort-Merge-Join"><span class="toc-number">9.3.</span> <span class="toc-text">3 Sort-Merge Join</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Hash-Join"><span class="toc-number">9.4.</span> <span class="toc-text">4 Hash Join</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Basic-Hash-Join"><span class="toc-number">9.4.1.</span> <span class="toc-text">Basic Hash Join</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Grace-Hash-Join-Hybrid-Hash-Join"><span class="toc-number">9.4.2.</span> <span class="toc-text">Grace Hash Join &#x2F; Hybrid Hash Join</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-10-Query-Processing-I"><span class="toc-number">10.</span> <span class="toc-text">Lecture #10: Query Processing I</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Query-Plan"><span class="toc-number">10.1.</span> <span class="toc-text">1 Query Plan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Processing-Models"><span class="toc-number">10.2.</span> <span class="toc-text">2 Processing Models</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterator-Model"><span class="toc-number">10.2.1.</span> <span class="toc-text">Iterator Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Materialization-Model"><span class="toc-number">10.2.2.</span> <span class="toc-text">Materialization Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vectorization-Model"><span class="toc-number">10.2.3.</span> <span class="toc-text">Vectorization Model</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Access-Methods"><span class="toc-number">10.3.</span> <span class="toc-text">3 Access Methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sequential-Scan"><span class="toc-number">10.4.</span> <span class="toc-text">Sequential Scan</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Index-Scan"><span class="toc-number">10.4.1.</span> <span class="toc-text">Index Scan</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Modification-Queries"><span class="toc-number">10.5.</span> <span class="toc-text">4 Modification Queries</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Expression-Evaluation"><span class="toc-number">10.6.</span> <span class="toc-text">5 Expression Evaluation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-11-Query-Execution-II"><span class="toc-number">11.</span> <span class="toc-text">Lecture #11: Query Execution II</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Process-Models"><span class="toc-number">12.</span> <span class="toc-text">1 Process Models</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-per-Worker"><span class="toc-number">12.0.1.</span> <span class="toc-text">Process per Worker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Process-Pool"><span class="toc-number">12.0.2.</span> <span class="toc-text">Process Pool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thread-per-Worker"><span class="toc-number">12.0.3.</span> <span class="toc-text">Thread per Worker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Inter-Query-Parallelism"><span class="toc-number">12.1.</span> <span class="toc-text">2 Inter-Query Parallelism</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Intra-Query-parallelism"><span class="toc-number">12.2.</span> <span class="toc-text">3 Intra-Query parallelism</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Intra-Operator-Parallelism-Horizontal"><span class="toc-number">12.2.1.</span> <span class="toc-text">Intra-Operator Parallelism (Horizontal)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Inter-Operator-Parallelism-Vertical"><span class="toc-number">12.2.2.</span> <span class="toc-text">Inter-Operator Parallelism (Vertical)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bushy-Parallelism"><span class="toc-number">12.2.3.</span> <span class="toc-text">Bushy Parallelism</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I-O-Parallelism"><span class="toc-number">12.3.</span> <span class="toc-text">I&#x2F;O Parallelism</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Multi-Disk-Parallelism"><span class="toc-number">12.3.1.</span> <span class="toc-text">Multi-Disk Parallelism</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Database-Partitioning"><span class="toc-number">12.3.2.</span> <span class="toc-text">Database Partitioning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Logical-Partitioning"><span class="toc-number">12.3.3.</span> <span class="toc-text">Logical Partitioning</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-14-Query-Planning-amp-Optimization-I"><span class="toc-number">13.</span> <span class="toc-text">Lecture #14: Query Planning &amp; Optimization I</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-14-Concurrency-Control-Theory"><span class="toc-number">14.</span> <span class="toc-text">Lecture #14: Concurrency Control Theory</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/05/02/design-patterns/" title="Design Patterns"><img src="/img/design_patterns.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Design Patterns"/></a><div class="content"><a class="title" href="/2021/05/02/design-patterns/" title="Design Patterns">Design Patterns</a><time datetime="2021-05-02T15:53:56.000Z" title="发表于 2021-05-02 23:53:56">2021-05-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/28/Database-System/" title="Database System"><img src="/img/compute_networking.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Database System"/></a><div class="content"><a class="title" href="/2021/04/28/Database-System/" title="Database System">Database System</a><time datetime="2021-04-28T01:43:54.000Z" title="发表于 2021-04-28 09:43:54">2021-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/28/CS144-TCP/" title="Compute Networking Lab"><img src="/img/compute_networking.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Compute Networking Lab"/></a><div class="content"><a class="title" href="/2021/04/28/CS144-TCP/" title="Compute Networking Lab">Compute Networking Lab</a><time datetime="2021-04-28T01:43:54.000Z" title="发表于 2021-04-28 09:43:54">2021-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/12/6-S081-Operating-System-Engineering/" title="Operating System Engineering Lab"><img src="/img/operating_system.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Operating System Engineering Lab"/></a><div class="content"><a class="title" href="/2021/04/12/6-S081-Operating-System-Engineering/" title="Operating System Engineering Lab">Operating System Engineering Lab</a><time datetime="2021-04-12T15:50:06.000Z" title="发表于 2021-04-12 23:50:06">2021-04-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/03/29/Cplusplus%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" title="C++内存管理机制"><img src="/img/C++%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++内存管理机制"/></a><div class="content"><a class="title" href="/2021/03/29/Cplusplus%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6/" title="C++内存管理机制">C++内存管理机制</a><time datetime="2021-03-29T03:26:40.000Z" title="发表于 2021-03-29 11:26:40">2021-03-29</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/forest.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By 獨守空城</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Life is like a box of chocolates. You never know what you're gonna get.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script></div></body></html>
