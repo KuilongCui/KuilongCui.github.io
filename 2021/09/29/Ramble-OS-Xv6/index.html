@@ -243,7 +243,7 @@ if (asideStatus !== undefined) {
 </li>
 </ul>
 <p>在从内核空间进入到用户空间之前，内核会设置好STVEC寄存器指向内核希望trap代码运行的位置，即<code>trampoline</code>起始位置。</p>
-<p>![page table](./Ramble-OS-Xv6/page table.png)</p>
+<p><img src="/2021/09/29/Ramble-OS-Xv6/page_table.png" alt="page table"></p>
 <p>执行<code>ecall</code>指令之后会，PC会跳转到页表中的<code>trampoline</code>（包含了内核中的trap处理起始代码）。</p>
 <p><code>trampoline</code>中首先保存寄存器，stack pointer设置为kernel stack（这个值位于trapframe中，kernel已经提前预设），然后将进程页表设置为内核页表，跳转至接下来要执行的函数（usertrap.c）的指针。</p>
 <blockquote>
